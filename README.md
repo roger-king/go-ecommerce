@@ -6,6 +6,7 @@ Simple E-Commerce API endpoint in GoLang. This is me playing around with GoLang 
 
 - Go v1.10.1
 - Dep v.0.4.1
+- Gin
 
 # Setting up
 

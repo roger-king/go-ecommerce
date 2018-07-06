@@ -41,10 +41,3 @@
   name = "github.com/joho/godotenv"
   version = "1.2.0"
 
-[[constraint]]
-  name = "github.com/go-sql-driver/mysql"
-  version = "1.4.0"
-
-[[constraint]]
-  name = "github.com/go-xorm/xorm"
-  version = "0.7.0"

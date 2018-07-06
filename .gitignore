@@ -12,3 +12,7 @@
 *.out
 
 vendor
+
+.env
+.idea
+gin-bin

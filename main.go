@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/jinzhu/gorm"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/roger-king/go-ecommerce/server"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,24 +22,25 @@ func init() {
 	log.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.WarnLevel)
-
-	// DB Connection
-	db, _ := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-	defer db.Close()
+	log.SetLevel(log.InfoLevel)
 }
 
 func main() {
 	port := os.Getenv("PORT")
 
+	// DB Connection
+	db, _ := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
+	defer db.Close()
+
 	if port == "" {
-		log.Fatal("$PORT is not defined")
+		log.Fatalln("$PORT is not defined")
 	}
 
-	router := NewRouter()
+	router := server.NewRouter()
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
 
-	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods)(router)))
+	log.Errorln(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods)(router)))
+	log.Infoln("Application Started on http://localhost:8000")
 }

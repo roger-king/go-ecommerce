@@ -1,0 +1,23 @@
+settings:
+  legacy:
+    force: false
+    interval: 100ms
+server:
+  status: true
+  open: false
+  host: localhost
+  port: 5001
+schema:
+- name: go-ecommerce
+  path: .
+  commands:
+    run: true
+  watcher:
+    extensions:
+    - go
+    paths:
+    - /
+    ignored_paths:
+    - .git
+    - .realize
+    - vendor

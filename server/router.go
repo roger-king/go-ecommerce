@@ -1,11 +1,10 @@
-package main
+package server
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/gorilla/mux"
 	"github.com/roger-king/go-ecommerce/controllers"
+	log "github.com/sirupsen/logrus"
+	"net/http"
 )
 
 type Route struct {
@@ -36,7 +35,7 @@ func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		var handler http.Handler
-		log.Println(route.Name)
+		log.Infoln(route.Name)
 		handler = route.HandlerFunc
 
 		router.

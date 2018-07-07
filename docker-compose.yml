@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+  db: {}
+
+services:
+  db:
+    image: mysql
+    container_name: go_db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+       MYSQL_DATABASE: store
+       MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - "3306:3306"

@@ -1,4 +1,4 @@
-package heartbeat
+package controllers
 
 import (
 	"encoding/json"

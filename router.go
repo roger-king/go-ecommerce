@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/roger-king/go-ecommerce/heartbeat"
+	"github.com/roger-king/go-ecommerce/controllers"
 )
 
 type Route struct {
@@ -22,7 +22,7 @@ var routes = Routes{
 		"HealthCheck",
 		"GET",
 		"/api/healthCheck",
-		heartbeat.HealthCheckController,
+		controllers.HealthCheckController,
 	},
 	//Route {
 	//	"GetProducts",

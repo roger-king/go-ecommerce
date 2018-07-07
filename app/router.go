@@ -1,23 +1,23 @@
 package app
 
 import (
-	"net/http"
-	"log"
 	"github.com/gorilla/mux"
 	"github.com/rogr-king/go-ecommerce/app/heartbeat"
+	"log"
+	"net/http"
 )
 
 type Route struct {
-	Name string
-	Method string
-	Pattern string
+	Name        string
+	Method      string
+	Pattern     string
 	HandlerFunc http.HandlerFunc
 }
 
 type Routes []Route
 
-var routes = Routes {
-	Route {
+var routes = Routes{
+	Route{
 		"HealthCheck",
 		"GET",
 		"/api/healthCheck",
@@ -30,7 +30,6 @@ var routes = Routes {
 	//	Store.GetProductController,
 	//},
 }
-
 
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)

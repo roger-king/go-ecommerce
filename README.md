@@ -9,13 +9,16 @@ Simple E-Commerce API endpoint in GoLang. This is me playing around with GoLang 
 - Realize
 
 ```bash
-    go get -u github.com/oxequa/realize
     go get -u github.com/golang/dep/cmd/dep
+    go get -u github.com/oxequa/realize
 ```
 
-# Setting up
+# Start Development
 
 ```bash
     # Install dependencies
     dep ensure
+
+    # Start Application
+    realize start
 ```

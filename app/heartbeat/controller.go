@@ -1,13 +1,13 @@
 package heartbeat
 
 import (
-	"net/http"
 	"encoding/json"
 	"log"
+	"net/http"
 )
 
 type HealthCheck struct {
-	Msg string `json:"msg"`
+	Msg     string `json:"msg"`
 	Version string `json:"version"`
 }
 

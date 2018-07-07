@@ -1,11 +1,11 @@
-package app
+package main
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/roger-king/go-ecommerce/app/heartbeat"
+	"github.com/roger-king/go-ecommerce/heartbeat"
 )
 
 type Route struct {

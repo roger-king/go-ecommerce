@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/server"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,12 +25,23 @@ func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
+var DB *gorm.DB
+var dbError error
+
 func main() {
 	port := os.Getenv("PORT")
 
 	// DB Connection
-	db, _ := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-	defer db.Close()
+	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
+	DB, dbError = gorm.Open("mysql", dbConnectionString+"?charset=utf8&parseTime=True&loc=Local")
+
+	if dbError != nil {
+		log.Fatalln(dbError)
+	}
+
+	defer DB.Close()
+
+	DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&models.Product{})
 
 	if port == "" {
 		log.Fatalln("$PORT is not defined")

@@ -1,14 +1,15 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
 	"github.com/jinzhu/gorm"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/rogr-king/go-ecommerce/app"
-	"log"
-	"net/http"
-	"os"
+	"github.com/roger-king/go-ecommerce/app"
 )
 
 func main() {

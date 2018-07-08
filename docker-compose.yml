@@ -5,13 +5,15 @@ volumes:
 
 services:
   db:
-    image: mysql
+    image: mysql:8
     container_name: go_db
     restart: always
     ports:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: storefront
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: appuser
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - db:/var/lib/mysql

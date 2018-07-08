@@ -4,13 +4,12 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/handlers"
 	_ "github.com/joho/godotenv/autoload"
 	log "github.com/sirupsen/logrus"
-	"github.com/gorilla/handlers"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/server"
@@ -38,13 +37,14 @@ func main() {
 	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
 	DB, dbError = gorm.Open("mysql", dbConnectionString+"?charset=utf8&parseTime=True&loc=Local")
 
+	// TODO: figure out why this is needed
+	DB.Exec("USE storefront")
+
+	DB.AutoMigrate(&models.Product{})
 	if dbError != nil {
 		log.Fatalln(dbError)
 	}
-
 	defer DB.Close()
-
-	DB.AutoMigrate(&models.Product{})
 
 	if port == "" {
 		log.Fatalln("$PORT is not defined")

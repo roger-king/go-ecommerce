@@ -11,9 +11,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-       MYSQL_USER: dev
-       MYSQL_PASSWORD: password
-       MYSQL_DATABASE: storefront
+      MYSQL_DATABASE: storefront
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - db:/var/lib/mysql
     ports:

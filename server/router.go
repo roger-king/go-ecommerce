@@ -23,12 +23,18 @@ var routes = Routes{
 		"/api/healthCheck",
 		controllers.HealthCheckController,
 	},
-	//Route {
-	//	"GetProducts",
-	//	"GET",
-	//	"/api/store",
-	//	Store.GetProductController,
-	//},
+	Route {
+		"GetProducts",
+		"GET",
+		"/api/store",
+		controllers.FindProductsController,
+	},
+	Route {
+		"CreateProducts",
+		"POST",
+		"/api/store",
+		controllers.CreateProductsController,
+	},
 }
 
 func NewRouter() *mux.Router {

@@ -8,11 +8,9 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	log "github.com/sirupsen/logrus"
 
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
-
-	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/server"
+	"github.com/roger-king/go-ecommerce/db"
+	"github.com/roger-king/go-ecommerce/models"
 )
 
 func init() {
@@ -27,24 +25,17 @@ func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
-var DB *gorm.DB
-var dbError error
 
 func main() {
 	port := os.Getenv("PORT")
 
 	// DB Connection
-	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
-	DB, dbError = gorm.Open("mysql", dbConnectionString+"?charset=utf8&parseTime=True&loc=Local")
+	db := db.InitDBConnection()
 
-	// TODO: figure out why this is needed
-	DB.Exec("USE storefront")
+	defer db.Close()
 
-	DB.AutoMigrate(&models.Product{})
-	if dbError != nil {
-		log.Fatalln(dbError)
-	}
-	defer DB.Close()
+	db.AutoMigrate(&models.Product{})
+
 
 	if port == "" {
 		log.Fatalln("$PORT is not defined")

@@ -8,10 +8,10 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/roger-king/go-ecommerce/models"
-	"github.com/roger-king/go-ecommerce/controllers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/roger-king/go-ecommerce/handlers"
+	"github.com/roger-king/go-ecommerce/models"
 )
 
 type App struct {
@@ -35,13 +35,13 @@ var routes = Routes{
 		"/api/healthCheck",
 		controllers.HealthCheckController,
 	},
-	Route {
+	Route{
 		"GetProducts",
 		"GET",
 		"/api/store",
 		controllers.FindProductsController,
 	},
-	Route {
+	Route{
 		"CreateProducts",
 		"POST",
 		"/api/store",
@@ -77,7 +77,6 @@ func init() {
 	// Only log the warning severity or above.
 	log.SetLevel(log.DebugLevel)
 }
-
 
 func main() {
 	port := os.Getenv("PORT")

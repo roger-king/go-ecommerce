@@ -1,11 +1,10 @@
-package controllers
+package handlers
 
 import (
-	"net/http"
-	"github.com/roger-king/go-ecommerce/services"
-	"github.com/roger-king/go-ecommerce/utilities"
-	"github.com/roger-king/go-ecommerce/models"
 	"encoding/json"
+	"github.com/roger-king/go-ecommerce/models"
+	"github.com/roger-king/go-ecommerce/utilities"
+	"net/http"
 )
 
 func FindProductsController(w http.ResponseWriter, req *http.Request) {
@@ -35,4 +34,3 @@ func CreateProductsController(w http.ResponseWriter, req *http.Request) {
 
 	utilities.RespondWithJSON(w, http.StatusCreated, p)
 }
-

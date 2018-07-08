@@ -5,6 +5,7 @@ import (
 	"github.com/roger-king/go-ecommerce/controllers"
 	log "github.com/sirupsen/logrus"
 	"net/http"
+	"github.com/jinzhu/gorm"
 )
 
 type Route struct {
@@ -37,7 +38,7 @@ var routes = Routes{
 	},
 }
 
-func NewRouter() *mux.Router {
+func (db *gorm.DB) NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		var handler http.Handler

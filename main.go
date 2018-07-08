@@ -8,10 +8,63 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/roger-king/go-ecommerce/server"
-	"github.com/roger-king/go-ecommerce/db"
 	"github.com/roger-king/go-ecommerce/models"
+	"github.com/roger-king/go-ecommerce/controllers"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
+
+type App struct {
+	db gorm.DB
+}
+
+// Application Router
+type Route struct {
+	Name        string
+	Method      string
+	Pattern     string
+	HandlerFunc http.HandlerFunc
+}
+
+type Routes []Route
+
+var routes = Routes{
+	Route{
+		"HealthCheck",
+		"GET",
+		"/api/healthCheck",
+		controllers.HealthCheckController,
+	},
+	Route {
+		"GetProducts",
+		"GET",
+		"/api/store",
+		controllers.FindProductsController,
+	},
+	Route {
+		"CreateProducts",
+		"POST",
+		"/api/store",
+		controllers.CreateProductsController,
+	},
+}
+
+func (app *App) NewRouter() *mux.Router {
+	router := mux.NewRouter().StrictSlash(true)
+	for _, route := range routes {
+		var handler http.Handler
+		log.Infoln(route.Name)
+		handler = route.HandlerFunc
+
+		router.
+			Methods(route.Method).
+			Path(route.Pattern).
+			Name(route.Name).
+			Handler(handler)
+	}
+
+	return router
+}
 
 func init() {
 	// Log as JSON instead of the default ASCII formatter.
@@ -30,18 +83,24 @@ func main() {
 	port := os.Getenv("PORT")
 
 	// DB Connection
-	db := db.InitDBConnection()
+	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
+	db, dbError := models.InitDB(dbConnectionString)
+
+	if dbError != nil {
+		log.Panicf("Error connecting to database %s", dbError)
+	}
 
 	defer db.Close()
 
 	db.AutoMigrate(&models.Product{})
 
+	app := &App{db: db}
 
 	if port == "" {
-		log.Fatalln("$PORT is not defined")
+		log.Panic("$PORT is not defined")
 	}
 
-	router := server.NewRouter()
+	router := NewRouter(app)
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})

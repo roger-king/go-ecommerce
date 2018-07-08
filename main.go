@@ -4,13 +4,16 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/joho/godotenv/autoload"
+	log "github.com/sirupsen/logrus"
 	"github.com/gorilla/handlers"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/joho/godotenv/autoload"
+
 	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/server"
-	log "github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -41,7 +44,7 @@ func main() {
 
 	defer DB.Close()
 
-	DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&models.Product{})
+	DB.AutoMigrate(&models.Product{})
 
 	if port == "" {
 		log.Fatalln("$PORT is not defined")

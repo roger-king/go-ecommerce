@@ -2,3 +2,4 @@ vendor
 .gitignore
 .git
 *.md
+.realize.yaml

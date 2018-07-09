@@ -5,10 +5,11 @@ import (
 	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/utilities"
 	"net/http"
+	"github.com/roger-king/go-ecommerce/envs"
 )
 
-func FindProductsController(w http.ResponseWriter, req *http.Request) {
-	products, err := services.GetProducts()
+func FindProductsController(env *envs.Env, w http.ResponseWriter, req *http.Request) {
+	products, err := models.AllProducts()
 
 	if err != nil {
 		utilities.RespondWithError(w, http.StatusBadRequest, "Error getting products")
@@ -30,7 +31,7 @@ func CreateProductsController(w http.ResponseWriter, req *http.Request) {
 
 	defer req.Body.Close()
 
-	services.CreateProduct(p)
+	models.CreateProduct(p)
 
 	utilities.RespondWithJSON(w, http.StatusCreated, p)
 }

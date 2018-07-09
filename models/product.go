@@ -8,8 +8,9 @@ type Product struct {
 	Name string `json:"name"`
 }
 
-func (db *DB) AllProducts() ([]Product, error) {
+func AllProducts() ([]Product, error) {
 	var products []Product
+	db := *Context{}
 
 	defer db.Close()
 
@@ -18,7 +19,9 @@ func (db *DB) AllProducts() ([]Product, error) {
 	return products, err
 }
 
-func (db *DB) CreateProduct(product Product) (*Product, error) {
+func CreateProduct(product Product) (*Product, error) {
+	db := *ContextDB
+
 	err := db.Create(&product).Error
 
 	if err != nil {

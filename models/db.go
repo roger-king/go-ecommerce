@@ -1,6 +1,10 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+)
 
 type DataStore interface {
 	AllProducts() ([]*Product, error)
@@ -11,8 +15,13 @@ type DB struct {
 	*gorm.DB
 }
 
-func InitDB(dsn string) (*DB, error) {
-	db, err := gorm.Open("mysql", dsn+"?charset=utf8&parseTime=True&loc=Local")
+type Connection struct {
+	*DB
+	dsn string
+}
+
+func InitDB(conn *Connection) (*DB, error) {
+	db, err := gorm.Open("mysql", conn.dsn+"?charset=utf8&parseTime=True&loc=Local")
 
 	if err != nil {
 		return nil, err

@@ -10,7 +10,6 @@ import (
 	"github.com/gorilla/handlers"
 	h "github.com/roger-king/go-ecommerce/handlers"
 	"github.com/roger-king/go-ecommerce/models"
-	"github.com/jinzhu/gorm"
 )
 
 func init() {
@@ -22,7 +21,7 @@ func init() {
 	log.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.InfoLevel)
 }
 
 func main() {
@@ -30,19 +29,7 @@ func main() {
 
 	// DB Connection
 	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
-	db, err := gorm.Open("mysql", dbConnectionString+"?charset=utf8&parseTime=True&loc=Local")
-
-	if err != nil {
-		log.Panicln(err)
-	}
-
-	if err = db.DB().Ping(); err != nil {
-		log.Panicf("Error connecting to database: %s", err)
-	}
-
-	defer db.Close()
-
-	db.AutoMigrate(&models.Product{})
+	models.InitDB(dbConnectionString)
 
 	if port == "" {
 		log.Panic("$PORT is not defined")
@@ -53,6 +40,6 @@ func main() {
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
 
-	log.Errorln(http.ListenAndServe(":8000", handlers.CORS(allowedOrigins, allowedMethods)(router)))
-	log.Infoln("Application Started on http://localhost:8000")
+	log.Errorln(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods)(router)))
+	log.Infoln("Application is running on port %s", port)
 }

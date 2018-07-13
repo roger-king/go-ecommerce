@@ -5,11 +5,13 @@ import (
 	"github.com/roger-king/go-ecommerce/models"
 	"github.com/roger-king/go-ecommerce/utilities"
 	"net/http"
-	"github.com/roger-king/go-ecommerce/envs"
+	log "github.com/sirupsen/logrus"
 )
 
-func FindProductsController(env *envs.Env, w http.ResponseWriter, req *http.Request) {
+func FindProductsController(w http.ResponseWriter, req *http.Request) {
 	products, err := models.AllProducts()
+
+	log.Infoln("THis should work")
 
 	if err != nil {
 		utilities.RespondWithError(w, http.StatusBadRequest, "Error getting products")

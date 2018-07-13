@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/roger-king/go-ecommerce/envs"
 )
 
 // Application Router
@@ -16,8 +15,7 @@ type Route struct {
 }
 
 type Handler struct {
-	*envs.Env
-	H func(e *envs.Env, w http.ResponseWriter, r *http.Request) error
+	H func(w http.ResponseWriter, r *http.Request) error
 }
 
 type Routes []Route
@@ -28,6 +26,12 @@ var routes = Routes{
 		"GET",
 		"/api/healthCheck",
 		HealthCheckController,
+	},
+	Route{
+		"CreateUser",
+		"POST",
+		"/api/user",
+		CreateUserController,
 	},
 	Route{
 		"GetProducts",

@@ -1,6 +1,8 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Product struct {
 	gorm.Model
@@ -10,7 +12,6 @@ type Product struct {
 
 func AllProducts() ([]Product, error) {
 	var products []Product
-	db := *Context{}
 
 	defer db.Close()
 
@@ -20,9 +21,8 @@ func AllProducts() ([]Product, error) {
 }
 
 func CreateProduct(product Product) (*Product, error) {
-	db := *ContextDB
-
-	err := db.Create(&product).Error
+	var err error
+	err = db.Create(&product).Error
 
 	if err != nil {
 		return nil, err

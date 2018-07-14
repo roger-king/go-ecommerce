@@ -33,7 +33,12 @@ func CreateUserController(w http.ResponseWriter, req *http.Request) {
 func FindUserByEmailController(w http.ResponseWriter, req *http.Request) {
 	query := req.URL.Query()
 
-	email, _ := query["email"]
+	email, queryErr := query["email"]
+
+	if !queryErr {
+		utilities.RespondWithError(w, http.StatusBadRequest, "invalid request")
+		return
+	}
 
 	user, err := models.FindUserByEmail(email[0])
 

@@ -12,6 +12,12 @@ type Route struct {
 	Method      string
 	Pattern     string
 	HandlerFunc http.HandlerFunc
+	Query *Query
+}
+
+type Query struct {
+	key string
+	value string
 }
 
 type Handler struct {
@@ -26,24 +32,38 @@ var routes = Routes{
 		"GET",
 		"/api/healthCheck",
 		HealthCheckController,
+		nil,
 	},
 	Route{
 		"CreateUser",
 		"POST",
 		"/api/user",
 		CreateUserController,
+		nil,
+	},
+	Route{
+		"CreateUser",
+		"GET",
+		"/api/user",
+		FindUserByEmailController,
+		&Query {
+			"email",
+			"{id:[0-9]+}",
+		},
 	},
 	Route{
 		"GetProducts",
 		"GET",
 		"/api/store",
 		FindProductsController,
+		nil,
 	},
 	Route{
 		"CreateProducts",
 		"POST",
 		"/api/store",
 		CreateProductsController,
+		nil,
 	},
 }
 
@@ -58,6 +78,10 @@ func NewRouter() *mux.Router {
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(handler)
+
+		if route.Query != nil {
+			router.Queries(route.Query.key, route.Query.value)
+		}
 	}
 
 	return router

@@ -25,5 +25,8 @@ func InitDB(dsn string) {
 		log.Panicf("Error connecting to database: %s", err)
 	}
 
+	// TODO: Before Production we want to dynamically set all of this.
+	db.LogMode(true)
+
 	db.AutoMigrate(&Product{}, &User{})
 }

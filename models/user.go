@@ -4,14 +4,20 @@ import (
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 	"errors"
-	"github.com/labstack/gommon/log"
+	log "github.com/sirupsen/logrus"
 )
 
 type User struct {
 	gorm.Model
 
 	Name string `json:"name"`
+	Email string `gorm:"type:varchar(100);unique_index"`
 	Password string `json:"password"`
+}
+
+type userDTO struct {
+	Name string `json:"name"`
+	Email string `json:"email"`
 }
 
 func (u *User) BeforeCreate(scope *gorm.Scope) error {
@@ -33,7 +39,7 @@ func hashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func CreateUser(user User) (*User, error) {
+func CreateUser(user User) (*userDTO, error) {
 	var err error
 	err = db.Create(&user).Error
 
@@ -41,6 +47,27 @@ func CreateUser(user User) (*User, error) {
 		return nil, err
 	}
 
-	return &user, err
+	createdUser := userDTO{
+		Name: user.Name,
+		Email: user.Email,
+	}
+
+	return &createdUser, nil
+}
+
+func FindUserByEmail(email string) (*userDTO, error) {
+	var user User
+
+	err := db.Where("email = ?", email).First(&user).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+
+	return &userDTO{
+		Name: user.Name,
+		Email: user.Email,
+	}, nil
 }
 

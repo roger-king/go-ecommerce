@@ -8,29 +8,23 @@ import (
 )
 
 func AuthenticateController(w http.ResponseWriter, req *http.Request) {
-	var authUser models.AuthUser
+	var user models.User
 
 	decoder := json.NewDecoder(req.Body)
 
-	if err := decoder.Decode(&authUser); err != nil {
+	if err := decoder.Decode(&user); err != nil {
 		utilities.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
 	defer req.Body.Close()
 
-	token := req.Header.Get("Authorization")
-
-	if len(token) > 0 {
-		authUser.Token = token
-	}
-
-	authedUser, err := models.Authenticate(authUser)
+	token, err := models.Authenticate(user)
 
 	if err != nil {
-		utilities.RespondWithError(w, http.StatusBadRequest, "user already exists")
+		utilities.RespondWithError(w, http.StatusBadRequest, "Invalid email or password")
 		return
 	}
 
-	utilities.RespondWithJSON(w, http.StatusCreated, authedUser)
+	utilities.RespondWithJSON(w, http.StatusCreated, token)
 }

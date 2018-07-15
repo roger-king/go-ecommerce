@@ -35,6 +35,13 @@ var routes = Routes{
 		nil,
 	},
 	Route{
+		"Login",
+		"POST",
+		"/api/login",
+		AuthenticateController,
+		nil,
+	},
+	Route{
 		"CreateUser",
 		"POST",
 		"/api/user",

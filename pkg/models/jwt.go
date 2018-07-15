@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/dgrijalva/jwt-go"
 	"fmt"
+	"time"
 )
 
 type JwtToken struct {
@@ -14,6 +15,7 @@ func CreateJWTToken(user User) JwtToken {
 		"name": user.Name,
 		"email": user.Email,
 		"password": user.Password,
+		"exp": time.Now().Unix() + 604800,
 	})
 
 	tokenString, error := token.SignedString([]byte("secret"))
@@ -23,4 +25,24 @@ func CreateJWTToken(user User) JwtToken {
 	}
 
 	return JwtToken{Token: tokenString}
+}
+
+func Validate(jwtToken JwtToken) bool {
+	token, error := jwt.Parse(jwtToken.Token, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("There was an error")
+		}
+		return []byte("secret"), nil
+	})
+
+	if error != nil {
+		return false
+	}
+
+	if token.Valid {
+		// context.Set(req, "decoded", token.Claims)
+		return true
+	}
+
+	return false
 }

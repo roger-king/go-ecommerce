@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"net/http"
-	"github.com/roger-king/go-ecommerce/models"
+	"github.com/roger-king/go-ecommerce/pkg/models"
 	"encoding/json"
-	"github.com/roger-king/go-ecommerce/utilities"
+	"github.com/roger-king/go-ecommerce/pkg/utilities"
 )
 
 func CreateUserController(w http.ResponseWriter, req *http.Request) {

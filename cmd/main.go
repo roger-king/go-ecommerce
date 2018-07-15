@@ -8,8 +8,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/handlers"
-	h "github.com/roger-king/go-ecommerce/handlers"
-	"github.com/roger-king/go-ecommerce/models"
+	h "github.com/roger-king/go-ecommerce/pkg/handlers"
+	"github.com/roger-king/go-ecommerce/pkg/models"
 )
 
 func init() {

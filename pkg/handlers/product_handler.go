@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/roger-king/go-ecommerce/models"
-	"github.com/roger-king/go-ecommerce/utilities"
+	"github.com/roger-king/go-ecommerce/pkg/models"
+	"github.com/roger-king/go-ecommerce/pkg/utilities"
 	"net/http"
 	log "github.com/sirupsen/logrus"
 )

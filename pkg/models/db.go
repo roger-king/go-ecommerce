@@ -28,5 +28,5 @@ func InitDB(dsn string) {
 	// TODO: Before Production we want to dynamically set all of this.
 	db.LogMode(true)
 
-	db.AutoMigrate(&Product{}, &User{})
+	db.AutoMigrate(&Product{}, &User{}, &Cart{})
 }

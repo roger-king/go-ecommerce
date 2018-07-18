@@ -41,5 +41,5 @@ func main() {
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
 
 	log.Errorln(http.ListenAndServe(":"+port, handlers.CORS(allowedOrigins, allowedMethods)(router)))
-	log.Infoln("Application is running on port %s", port)
+	log.Info("Application is running on port %s", port)
 }

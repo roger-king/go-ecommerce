@@ -13,6 +13,7 @@ type Route struct {
 	Pattern     string
 	HandlerFunc http.HandlerFunc
 	Query *Query
+	Protected bool
 }
 
 type Query struct {
@@ -33,6 +34,7 @@ var routes = Routes{
 		"/api/healthCheck",
 		HealthCheckController,
 		nil,
+		false,
 	},
 	Route{
 		"Login",
@@ -40,6 +42,7 @@ var routes = Routes{
 		"/api/login",
 		AuthenticateController,
 		nil,
+		false,
 	},
 	Route{
 		"CreateUser",
@@ -47,6 +50,7 @@ var routes = Routes{
 		"/api/user",
 		CreateUserController,
 		nil,
+		true,
 	},
 	Route{
 		"CreateUser",
@@ -57,6 +61,7 @@ var routes = Routes{
 			"email",
 			"{id:[0-9]+}",
 		},
+		true,
 	},
 	Route{
 		"GetProducts",
@@ -64,6 +69,7 @@ var routes = Routes{
 		"/api/store",
 		FindProductsController,
 		nil,
+		true,
 	},
 	Route{
 		"CreateProducts",
@@ -71,6 +77,7 @@ var routes = Routes{
 		"/api/store",
 		CreateProductsController,
 		nil,
+		true,
 	},
 }
 
@@ -88,6 +95,10 @@ func NewRouter() *mux.Router {
 
 		if route.Query != nil {
 			router.Queries(route.Query.key, route.Query.value)
+		}
+
+		if route.Protected {
+			router.Use(AuthMiddleware)
 		}
 	}
 

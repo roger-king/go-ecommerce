@@ -7,7 +7,7 @@ import (
 type Product struct {
 	gorm.Model
 
-	Name string `json:"name"`
+	Name string `gorm:"not null;unique" json:"name"`
 }
 
 func AllProducts() ([]Product, error) {

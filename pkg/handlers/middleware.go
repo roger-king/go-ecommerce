@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gorilla/context"
 	"github.com/roger-king/go-ecommerce/pkg/models"
 	"github.com/roger-king/go-ecommerce/pkg/utilities"
 	"github.com/sirupsen/logrus"
@@ -12,9 +13,9 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		token := r.Header.Get("Authorization")
 
 		if len(token) > 0 {
-			isAuthed := models.Validate(models.JwtToken{Token: token})
-
-			logrus.Infoln("PLease work", isAuthed)
+			authedUser := models.Validate(models.JwtToken{Token: token})
+			
+			context.Set(r, 'user', authedUser)
 
 			next.ServeHTTP(w, r)
 		} else {

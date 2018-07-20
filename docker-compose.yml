@@ -17,5 +17,3 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - db:/var/lib/mysql
-    ports:
-      - "3306:3306"

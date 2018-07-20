@@ -2,11 +2,9 @@ package models
 
 import (
 	"golang.org/x/crypto/bcrypt"
-
 )
 
-
-func Authenticate (user User) (*JwtToken, error) {
+func Authenticate(user User) (*JwtToken, error) {
 	var authedUser User
 
 	err := db.Where("email = ?", user.Email).First(&authedUser).Error
